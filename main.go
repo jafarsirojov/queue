@@ -2,7 +2,6 @@ package main
 
 type queue struct {
 	first *queueNode
-	last  *queueNode
 	size  int
 }
 
@@ -20,7 +19,6 @@ func (receiver *queue) equeue(elementPtr interface{}, queuePriority int) {
 			value:    elementPtr,
 		}
 		receiver.size++
-		receiver.last = receiver.first
 		return
 	}
 
@@ -34,7 +32,6 @@ func (receiver *queue) equeue(elementPtr interface{}, queuePriority int) {
 				priority: queuePriority,
 				value:    elementPtr,
 			}
-			receiver.last = current.next
 			return
 		}
 		current = current.next
@@ -43,7 +40,7 @@ func (receiver *queue) equeue(elementPtr interface{}, queuePriority int) {
 
 func (receiver *queue) dequeue() interface{} {
 	if receiver.len() == 0 {
-		return 0
+		return 0 // var temp interface{} = 0
 	}
 
 	queueReturn := receiver.first.value
@@ -67,15 +64,20 @@ func (receiver *queue) firstValue() interface{} {
 }
 
 func (receiver *queue) lastQueue() *queueNode {
-	return receiver.last
+	current :=receiver.first
+	for current.next != nil{
+		current=current.next
+	}
+	return current
 }
 
 func (receiver *queue) lastValue() interface{} {
-	return receiver.last.value
+	return receiver.lastQueue().value
 }
 
 func (receiver *queue) itemDequeue() interface{} {
 	return receiver.dequeue()
 }
+
 
 func main() {}
