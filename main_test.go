@@ -10,22 +10,21 @@ func Test_queue_empty(t *testing.T) {
 		t.Error("there is no item in the queue, the length must be 0,  got: ", q.len())
 	}
 
-	if q.firstQueue() != nil {
-		t.Error("item not added, first should be nil,  got: ", q.firstQueue())
+	if q.firstNode() != nil {
+		t.Error("item not added, first should be nil,  got: ", q.firstNode())
 	}
 
-	if q.lastQueue() != nil {
-		t.Error("item not added, last should be nil,  got: ", q.lastQueue())
+	if q.lastNode() != nil {
+		t.Error("item not added, last should be nil,  got: ", q.lastNode())
 	}
 
 	if q.dequeue() != 0 {
 		t.Error("there is no item in the queue, and it is not impossible to delete an empty queue, want:  0,   got: ", q.dequeue())
 	}
 	removeQueue := q.itemDequeue()
-	if removeQueue == q.firstQueue() {
+	if removeQueue == q.firstNode() {
 		t.Error("there is no item in the queue, and it is not impossible to delete an empty queue, want:  0,  got: ", removeQueue)
 	}
-
 }
 
 func Test_queue_OneQueue(t *testing.T) {

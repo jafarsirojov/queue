@@ -55,7 +55,7 @@ func (receiver *queue) len() int {
 	return receiver.size
 }
 
-func (receiver *queue) firstQueue() *queueNode {
+func (receiver *queue) firstNode() *queueNode {
 	return receiver.first
 }
 
@@ -63,16 +63,18 @@ func (receiver *queue) firstValue() interface{} {
 	return receiver.first.value
 }
 
-func (receiver *queue) lastQueue() *queueNode {
-	current :=receiver.first
-	for current.next != nil{
-		current=current.next
+func (receiver *queue) lastNode() *queueNode {
+	current := receiver.first
+	if current!=nil {
+		for current.next != nil {
+			current = current.next
+		}
 	}
 	return current
 }
 
 func (receiver *queue) lastValue() interface{} {
-	return receiver.lastQueue().value
+	return receiver.lastNode().value
 }
 
 func (receiver *queue) itemDequeue() interface{} {
