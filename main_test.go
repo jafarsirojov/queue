@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"testing"
 )
 
@@ -18,19 +19,20 @@ func Test_queue_empty(t *testing.T) {
 		t.Error("item not added, last should be nil,  got: ", q.lastNode())
 	}
 
-	if q.dequeue() != 0 {
-		t.Error("there is no item in the queue, and it is not impossible to delete an empty queue, want:  0,   got: ", q.dequeue())
+	removeFirstValue, err := q.dequeue()
+	if err != nil {
+		log.Printf("Has error when queue is not empty")
+	} else
+	if removeFirstValue == q.firstValue() {
+		t.Error("This item should be deleted after the queue: 'grandmother',  got: ", removeFirstValue)
 	}
-	removeQueue := q.itemDequeue()
-	if removeQueue == q.firstNode() {
-		t.Error("there is no item in the queue, and it is not impossible to delete an empty queue, want:  0,  got: ", removeQueue)
-	}
+
 }
 
 func Test_queue_OneQueue(t *testing.T) {
 
 	q := queue{}
-	q.equeue("grandmother",5)
+	q.equeue("grandmother", 5)
 	if q.len() != 1 {
 		t.Error("1 items added to the queue, the length should be 1,   got: ", q.len())
 	}
@@ -40,22 +42,16 @@ func Test_queue_OneQueue(t *testing.T) {
 	}
 
 	if q.firstValue() != "grandmother" {
-		t.Error("1 item is added to the queue and it is the first and last: first and last =  'grandmother',    got: "," last: ",q.lastValue())
+		t.Error("1 item is added to the queue and it is the first and last: first and last =  'grandmother',    got: ", " last: ", q.lastValue())
 	}
-
-	removeQueue := q.itemDequeue()
-	if removeQueue == nil || removeQueue != "grandmother"{
-		t.Error("This item should be deleted after the queue: 'grandmother',  got: ", removeQueue)
-	}
-
 }
 
 func Test_queue_manyQueue(t *testing.T) {
 	q := queue{}
-	q.equeue("grandmother",6)
-	q.equeue("grandfather",5)
-	q.equeue("girl",2)
-	q.equeue("boy",1)
+	q.equeue("grandmother", 6)
+	q.equeue("grandfather", 5)
+	q.equeue("girl", 2)
+	q.equeue("boy", 1)
 	if q.len() != 4 {
 		t.Error("4 items added to the queue, the length should be 4,  got: ", q.len())
 	}
@@ -78,7 +74,22 @@ func Test_queue_manyQueue(t *testing.T) {
 		t.Error("the last queue should be: 'boy',  got: ", q.lastValue())
 	}
 
-	if removeFirstQueue :=q.dequeue(); removeFirstQueue==q.firstValue(){
-		t.Error("This item should be deleted after the queue: 'grandmother',  got: ", q.dequeue())
+	removeFirstQueue, err := q.dequeue()
+	if err != nil {
+		t.Error("Has error when queue is not empty")
+	}
+	if removeFirstQueue == q.firstValue() {
+		t.Error("This item should be deleted after the queue: 'grandmother',  got: ", removeFirstQueue)
+	}
+}
+
+func Test_queue_dequeue_empty(t *testing.T) {
+	q := queue{}
+	removeFirstQueue, err := q.dequeue()
+	if err != nil {
+		log.Print("Has error when queue is not empty")
+	}else
+	if removeFirstQueue == q.firstValue() {
+		t.Error("This item should be deleted after the queue: 'grandmother',  got: ", removeFirstQueue)
 	}
 }

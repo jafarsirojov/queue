@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type queue struct {
 	first *queueNode
 	size  int
@@ -38,9 +40,9 @@ func (receiver *queue) equeue(elementPtr interface{}, queuePriority int) {
 	}
 }
 
-func (receiver *queue) dequeue() interface{} {
+func (receiver *queue) dequeue() (interface{},error) {
 	if receiver.len() == 0 {
-		return 0 // var temp interface{} = 0
+		return queue{},fmt.Errorf("No queue!!!")
 	}
 
 	queueReturn := receiver.first.value
@@ -48,7 +50,7 @@ func (receiver *queue) dequeue() interface{} {
 	receiver.first = receiver.first.next
 	receiver.size--
 
-	return queueReturn
+	return queueReturn,nil
 }
 
 func (receiver *queue) len() int {
@@ -77,7 +79,7 @@ func (receiver *queue) lastValue() interface{} {
 	return receiver.lastNode().value
 }
 
-func (receiver *queue) itemDequeue() interface{} {
+func (receiver *queue) itemDequeue() (interface{},error) {
 	return receiver.dequeue()
 }
 
